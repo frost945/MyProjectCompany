@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+п»їusing Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using MyProjectCompany.Domain;
@@ -15,26 +15,26 @@ namespace MyProjectCompany
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-            //подключаем в конфигурацию файл appsettings.json
+            //РїРѕРґРєР»СЋС‡Р°РµРј РІ РєРѕРЅС„РёРіСѓСЂР°С†РёСЋ С„Р°Р№Р» appsettings.json
             IConfigurationBuilder configBuild = new ConfigurationBuilder()
                 .SetBasePath(builder.Environment.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-            //оборачиваем секцию project в объектную форму
+            //РѕР±РѕСЂР°С‡РёРІР°РµРј СЃРµРєС†РёСЋ project РІ РѕР±СЉРµРєС‚РЅСѓСЋ С„РѕСЂРјСѓ
             IConfiguration configuration =configBuild.Build();
             AppConfig config = configuration.GetSection("Project").Get<AppConfig>()!;
 
-            //подключаем контекст БД
+            //РїРѕРґРєР»СЋС‡Р°РµРј РєРѕРЅС‚РµРєСЃС‚ Р‘Р”
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(config.Database.ConnectionString)
-            //на момент создания приложения в данной версии EF был баг, хотя ошибки нет, поэтому подавляем предупреждения
+            //РЅР° РјРѕРјРµРЅС‚ СЃРѕР·РґР°РЅРёСЏ РїСЂРёР»РѕР¶РµРЅРёСЏ РІ РґР°РЅРЅРѕР№ РІРµСЂСЃРёРё EF Р±С‹Р» Р±Р°Рі, С…РѕС‚СЏ РѕС€РёР±РєРё РЅРµС‚, РїРѕСЌС‚РѕРјСѓ РїРѕРґР°РІР»СЏРµРј РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёСЏ
             .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
 
             builder.Services.AddTransient<IServiceCategoriesRepository, EFServiceCategoriesRepository>();
             builder.Services.AddTransient<IServicesRepository, EFServicesRepository>();
             builder.Services.AddTransient<DataManager>();
 
-            //подключаем Identity систему
+            //РїРѕРґРєР»СЋС‡Р°РµРј Identity СЃРёСЃС‚РµРјСѓ
             builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -46,7 +46,7 @@ namespace MyProjectCompany
 
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
-            //настраиваем Authcookie
+            //РЅР°СЃС‚СЂР°РёРІР°РµРј Authcookie
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "myCompanyAuth";
@@ -56,29 +56,29 @@ namespace MyProjectCompany
                 options.SlidingExpiration = true;
             });
 
-            //подключаем функционал контроллеров
+            //РїРѕРґРєР»СЋС‡Р°РµРј С„СѓРЅРєС†РёРѕРЅР°Р» РєРѕРЅС‚СЂРѕР»Р»РµСЂРѕРІ
             builder.Services.AddControllersWithViews();
 
-            //подключаем логирование
+            //РїРѕРґРєР»СЋС‡Р°РµРј Р»РѕРіРёСЂРѕРІР°РЅРёРµ
             builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)); 
 
-            //собираем конфигурацию
+            //СЃРѕР±РёСЂР°РµРј РєРѕРЅС„РёРіСѓСЂР°С†РёСЋ
             WebApplication app = builder.Build();
 
-            //сразу используем логирование
+            //СЃСЂР°Р·Сѓ РёСЃРїРѕР»СЊР·СѓРµРј Р»РѕРіРёСЂРѕРІР°РЅРёРµ
             app.UseSerilogRequestLogging();
 
-            //подключаем обработку исключений
+            //РїРѕРґРєР»СЋС‡Р°РµРј РѕР±СЂР°Р±РѕС‚РєСѓ РёСЃРєР»СЋС‡РµРЅРёР№
             if(app.Environment.IsDevelopment()) 
                 app.UseDeveloperExceptionPage();
 
-            //подключаем использование статичных файлов
+            //РїРѕРґРєР»СЋС‡Р°РµРј РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ СЃС‚Р°С‚РёС‡РЅС‹С… С„Р°Р№Р»РѕРІ
             app.UseStaticFiles();
 
-            //подключаем маршрутизацию
+            //РїРѕРґРєР»СЋС‡Р°РµРј РјР°СЂС€СЂСѓС‚РёР·Р°С†РёСЋ
             app.UseRouting();
 
-            //подключаем авторизацию и аутентификацию
+            //РїРѕРґРєР»СЋС‡Р°РµРј Р°РІС‚РѕСЂРёР·Р°С†РёСЋ Рё Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёСЋ
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
