@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/main.css",
+    "inputFile": "wwwroot/scss/main.scss"
+  },
+  {
+    "outputFile": "wwwroot/js/jquery.dropotron.min.es5.js",
+    "inputFile": "wwwroot/js/jquery.dropotron.min.js"
+  }
+]

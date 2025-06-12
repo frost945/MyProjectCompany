@@ -1,0 +1,27 @@
+﻿<!-- Подключаем jQuery -->
+<script src="~/js/jquery.min.js"></script>
+
+<script src="~/js/util.js"></script>
+
+<!-- Подключаем Dropotron после jQuery -->
+<script src="~/js/jquery.dropotron.min.js"></script>
+
+<!-- Подключаем кастомные скрипты -->
+<script src="~/js/scripts.min.js" asp-append-version="true"></script>
+
+<script>
+    $(document).ready(function () {
+        console.log("Dropotron typeof inside ready:", typeof $.fn.dropotron);
+        if (typeof $.fn.dropotron === "function") {
+            $('#nav > ul').dropotron({
+                offsetY: -22,
+                mode: 'fade',
+                noOpenerFade: true,
+                speed: 300,
+                detach: false
+            });
+        } else {
+            console.error("Dropotron is not loaded.");
+        }
+    });
+</script>
